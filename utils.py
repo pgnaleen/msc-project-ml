@@ -1,3 +1,6 @@
+# just to ignore the warnings.
+import warnings
+import sys
 # To load and process the csv files as dataframe
 import pandas as pd
 # to make graphs
@@ -6,6 +9,28 @@ import numpy as np
 import matplotlib.pyplot as plt
 # Model evaluation
 from sklearn.metrics import classification_report, confusion_matrix
+
+warnings.filterwarnings('ignore')
+
+
+class Logger:
+    stdout = sys.stdout
+    messages = []
+
+    def start(self):
+        sys.stdout = self
+
+    def stop(self):
+        sys.stdout = self.stdout
+
+    def write(self, text):
+        self.messages.append(text)
+
+    def clean(self):
+        self.messages.clear()
+
+    def flush(self):
+        pass
 
 
 # a function to print the model results.
@@ -49,7 +74,7 @@ def model_summary(test, pred):
 
 
 # To plot the actual data and predicted data values, this is about the target column 'class'
-def plot_test_pred(test, pred, y_test, y_pred1):
+def plot_test_pred(y_test, y_pred1):
     # test have our test data, from the above data split.
     # pred have the list of prediction, sent by each model when we use it
 

@@ -1,3 +1,5 @@
+import tensorflow as tensorflow
+# !pip install tensorflow
 from utils import *
 from sklearn.metrics import classification_report, confusion_matrix
 
@@ -24,9 +26,11 @@ from keras.layers import Dense
 # Naive Bayes model
 from sklearn.naive_bayes import GaussianNB
 
+warnings.filterwarnings('ignore')
+
 
 def knn(x_train, y_train, x_test, y_test):
-    ################KNN###################
+    print('knn model processing started...')
     # make a object
     scaler = StandardScaler()
     # fit the object to training data
@@ -64,6 +68,7 @@ def knn(x_train, y_train, x_test, y_test):
 
 
 def xgb(x, y):
+    print('xgb model processing started...')
     # define the model
     model = XGBClassifier()
 
@@ -76,6 +81,7 @@ def xgb(x, y):
 
 
 def random_forest_classifier(x_train, y_train, x_test, y_test):
+    print('random_forest_classifier model processing started...')
     # make object of rfc model
     clf = RandomForestClassifier(max_depth=2, random_state=0)
 
@@ -91,6 +97,7 @@ def random_forest_classifier(x_train, y_train, x_test, y_test):
 
 
 def neural_network(x_train, y_train, x_test, y_test, x, y):
+    print('neural_network model processing started...')
     # this is model object
     model = Sequential()
 
@@ -122,6 +129,7 @@ def neural_network(x_train, y_train, x_test, y_test, x, y):
 
 
 def naive_bayes(x_train, y_train, x_test, y_test):
+    print('naive_bayes model processing started...')
     # make a object
     gnb = GaussianNB()
 

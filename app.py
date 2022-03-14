@@ -1,7 +1,4 @@
-# just to ignore the warnings.
-import warnings
 from flask import Flask
-import sys
 # This wil use to split data into train and test, for model training
 from sklearn.model_selection import train_test_split
 
@@ -17,23 +14,6 @@ from prep_data import *
 from models import *
 
 warnings.filterwarnings('ignore')
-
-
-class Logger:
-    stdout = sys.stdout
-    messages = []
-
-    def start(self):
-        sys.stdout = self
-
-    def stop(self):
-        sys.stdout = self.stdout
-
-    def write(self, text):
-        self.messages.append(text)
-
-    def clean(self):
-        self.messages.clear()
 
 
 app = Flask(__name__)
@@ -58,12 +38,25 @@ def get_prep_data(file_name):
     return response
 
 
-@app.route('/')
-def anomaly_detection():
-    return 'anomaly_detection!'
+@app.route('/model_prep_train_test_evaluation')
+def get_model_data():
+    log = Logger()
+    log.clean()
+    log.start()
+    model_preparation()
+    log.stop()
+
+    response = ""
+    for ele in log.messages:
+        response += ele
+        response += "\n"
+
+    print(log.messages)
+    print(response)
+    return response
 
 
-def model_preparation(df):
+def model_preparation():
     # Load the process data, saved by data_prep file
     df = pd.read_csv("Processed_data.csv")
 
@@ -111,6 +104,20 @@ def model_preparation(df):
 
     # extreme gradient boosting
     xgb(x, y)
+
+    # random forest classifier
+    random_forest_classifier(x_train, y_train, x_test, y_test)
+
+    # neural network
+    neural_network(x_train, y_train, x_test, y_test, x, y)
+
+    # naive bayes
+    naive_bayes(x_train, y_train, x_test, y_test)
+
+
+@app.route('/')
+def anomaly_detection():
+    return 'anomaly_detection!'
 
 
 if __name__ == '__main__':
