@@ -32,13 +32,13 @@ warnings.filterwarnings('ignore')
 def knn(x_train, y_train, x_test, y_test):
     print('knn model processing started...')
     # make a object
-    scaler = StandardScaler()
+    scalar = StandardScaler()
     # fit the object to training data
-    scaler.fit(x_train)
+    scalar.fit(x_train)
 
     # make dataset values normalize
-    x_train1 = scaler.transform(x_train)
-    x_test1 = scaler.transform(x_test)
+    x_train1 = scalar.transform(x_train)
+    x_test1 = scalar.transform(x_test)
 
     # assign the data
     y_train1 = y_train

@@ -1,20 +1,13 @@
 from flask import Flask
+from flask import jsonify
 # This wil use to split data into train and test, for model training
 from sklearn.model_selection import train_test_split
-
-# # SVM model
-# from sklearn import svm
-
-# # Stochastic Gradient Descent
-# from sklearn.linear_model import SGDClassifier
-# # feed data
-# from sklearn.pipeline import make_pipeline
+import time
 
 from prep_data import *
 from models import *
 
 warnings.filterwarnings('ignore')
-
 
 app = Flask(__name__)
 
@@ -57,6 +50,7 @@ def get_model_data():
 
 
 def model_preparation():
+    start_time = time.perf_counter()
     # Load the process data, saved by data_prep file
     df = pd.read_csv("Processed_data.csv")
 
@@ -101,23 +95,24 @@ def model_preparation():
 
     # KNN model
     knn(x_train, y_train, x_test, y_test)
+    print("KNN model training", time.perf_counter() - start_time, "seconds")
 
     # extreme gradient boosting
-    xgb(x, y)
+    # xgb(x, y)
 
     # random forest classifier
-    random_forest_classifier(x_train, y_train, x_test, y_test)
+    # random_forest_classifier(x_train, y_train, x_test, y_test)
 
     # neural network
-    neural_network(x_train, y_train, x_test, y_test, x, y)
+    # neural_network(x_train, y_train, x_test, y_test, x, y)
 
     # naive bayes
-    naive_bayes(x_train, y_train, x_test, y_test)
+    # naive_bayes(x_train, y_train, x_test, y_test)
 
 
 @app.route('/')
 def anomaly_detection():
-    return 'anomaly_detection!'
+    return jsonify({"code": "200", "message": "anomaly_detection!"})
 
 
 if __name__ == '__main__':
