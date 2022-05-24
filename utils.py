@@ -9,6 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 # Model evaluation
 from sklearn.metrics import classification_report, confusion_matrix
+import time
 
 warnings.filterwarnings('ignore')
 

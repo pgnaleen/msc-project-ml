@@ -1,15 +1,42 @@
-from flask import Flask
+from flask import Flask, request
 from flask import jsonify
 # This wil use to split data into train and test, for model training
 from sklearn.model_selection import train_test_split
-import time
-
+import os
 from prep_data import *
 from models import *
 
 warnings.filterwarnings('ignore')
-
 app = Flask(__name__)
+
+
+@app.route('/model_prep_realtime_predictions', methods=['POST'])
+def model_training_realtime_predictions():
+    print(request.json['datasetLocation'])
+    # collect all console output logs
+    log = Logger()
+    log.clean()
+    log.start()
+
+    # write dataset location from reqeust as can't send arguments with os.startfile
+    f = open("datasetLocation.txt", "w")
+    f.write(request.json['datasetLocation'])
+    f.close()
+    f = open("accessLogLocation.txt", "w")
+    f.write(request.json['accessLogLocation'])
+    f.close()
+
+    os.startfile('isolation_forest.py')
+
+    log.stop()
+    response = "{"
+    for ele in log.messages:
+        response += ele
+        response += "\n"
+    response += "}"
+    print(log.messages)
+    print(response)
+    return response
 
 
 @app.route('/data-preprocessing/<file_name>')
@@ -46,7 +73,7 @@ def get_model_data():
 
     print(log.messages)
     print(response)
-    return response
+    return jsonify({"code": "200", "message": response})
 
 
 def model_preparation():

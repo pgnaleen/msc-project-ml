@@ -54,8 +54,8 @@ def knn(x_train, y_train, x_test, y_test):
     y_pred1 = classifier.predict(x_test1)
 
     # print the result, just pass the prediction from above tab, and test data for both functions.
-    print(confusion_matrix(y_test1, y_pred1))
-    print(classification_report(y_test1, y_pred1))
+    print("Confusion matrix: ", confusion_matrix(y_test1, y_pred1))
+    print("Classification report: ", classification_report(y_test1, y_pred1))
 
     # pass test and predicted list to print the results.
     conclude_model_results(y_test, y_pred1)
